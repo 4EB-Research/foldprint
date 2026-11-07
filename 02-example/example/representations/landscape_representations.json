@@ -1,0 +1,17 @@
+{
+  "candidate_rows": 48,
+  "chunk_sha256": "7cda8f6b69ba3158f58e081b828ec4ce3b3b39782e208368f25f285fe8d89a26",
+  "codebook_size": 16384,
+  "dataset_id": "fictional_landscape_v1",
+  "embedding_dimension": 2560,
+  "esmc_contract_sha256": "f520a5bed56a9fbb97303d5ebf636e79766650505431352c8e56753bd5e86116",
+  "fictional": true,
+  "index_sha256": "5d9d1839f368908bbd005a670b09e939eb859d0913efdd33b335d4b0075bf20f",
+  "notice": "Synthetic vectors for offline code-path demonstration; not model outputs.",
+  "origin": "synthetic_offline_fixture",
+  "rows_including_wt": 50,
+  "sae_contract_sha256": "2fba7db692e13dab4fbbfdf2784a2fd28ff15569c71a02f8f5d1a26a4cae986d",
+  "schema_version": 1,
+  "storage_schema": "protein_sae_sparse_representations_v1",
+  "top_k": 64
+}

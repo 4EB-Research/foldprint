@@ -1,0 +1,9 @@
+{
+  "candidates": 48,
+  "dataset_id": "fictional_landscape_v1",
+  "fictional": true,
+  "references": 2,
+  "schema_version": 1,
+  "seed": 20260831,
+  "warning": "All sequences, structures, embeddings and SAE activations are synthetic."
+}

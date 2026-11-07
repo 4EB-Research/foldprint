@@ -1,0 +1,3 @@
+reference_id,reference_sequence_id,sequence,structure_path,chain_id,pfam_accession,pfam_profile_path,figure_focal_position
+fictional_alpha,WT::fictional_alpha,HENPFWMTILKYGRSPHHRKWNIHGYECPWPHCDNIIGLD,structures/fictional_alpha_wt.pdb,A,FICTIONAL.1,profiles/fictional_alpha.hmm,20
+fictional_beta,WT::fictional_beta,IRTVPIMNNKEQVDLNPMTDGAFPMIDRSAVLLKLTSQWR,structures/fictional_beta_wt.pdb,A,FICTIONAL.1,profiles/fictional_beta.hmm,

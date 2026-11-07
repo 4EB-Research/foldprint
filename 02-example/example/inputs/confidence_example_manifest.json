@@ -1,0 +1,6 @@
+{
+  "description": "Invented pTM and whole-sequence disorder means for software testing; no predictor was run",
+  "fictional": true,
+  "generator": "scripts/generate_confidence_example.py",
+  "rows": 48
+}
