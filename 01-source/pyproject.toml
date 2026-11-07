@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "protein-sae-analysis-pipeline"
+version = "0.1.0"
+description = "Protein representation analysis and figure-generation pipeline"
+readme = "README.md"
+requires-python = "==3.12.12"
+license = { text = "See LICENSE" }
+authors = [{ name = "Anonymous Authors" }]
+dependencies = [
+  "matplotlib>=3.9,<4",
+  "numpy>=2.0,<3",
+  "pandas>=2.2,<3",
+  "PyYAML>=6.0,<7",
+  "scipy>=1.14,<2",
+]
+
+[project.optional-dependencies]
+biohub = [
+  "esm @ git+https://github.com/Biohub/esm.git@67838dc8ac76f4145613e6cb36c5f3d758542f7c",
+  "transformers @ git+https://github.com/Biohub/transformers.git@ef32577f55da19a4989cd7b22e004dc43a4998cb",
+]
+test = ["pytest>=8.3,<9"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/protein_sae_pipeline"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+markers = [
+  "live: requires network access and a Biohub token",
+  "native: requires pinned native executables",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

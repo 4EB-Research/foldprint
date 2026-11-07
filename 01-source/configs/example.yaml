@@ -1,0 +1,103 @@
+schema_version: 1
+dataset_id: fictional_landscape_v1
+example: true
+generation_methods: [fictional_method_a, fictional_method_b]
+
+references:
+  fictional_alpha:
+    display_name: Target 1
+    expected_full: 24
+    focal_position: 20
+    pfam_accession: FICTIONAL.1
+  fictional_beta:
+    display_name: Target 2
+    expected_full: 24
+    focal_position: null
+    pfam_accession: FICTIONAL.1
+
+paths:
+  candidates: inputs/candidates.csv
+  references: inputs/references.csv
+  reference_positions: inputs/reference_positions.csv
+  structures: inputs/structures.csv
+  representations: representations/landscape_representations.npz
+  figure_examples: inputs/figure_examples.csv
+
+thresholds:
+  remote_identity_fraction: 0.30
+  structural_analogue_tm: 0.50
+  fpr_endpoints: [0.01, 0.05]
+
+models:
+  esmc:
+    api_alias: esmc-6b-2024-12
+    weights_repository: biohub/ESMC-6B
+    weights_revision: 45b0fa5d7fb06faefbd5e3b89bdcef35d564e79a
+    sdk_version: 3.3.0
+    sdk_commit: 67838dc8ac76f4145613e6cb36c5f3d758542f7c
+    transformers_version: 4.57.6
+    transformers_commit: ef32577f55da19a4989cd7b22e004dc43a4998cb
+    hidden_state_index: 60
+    embedding_dimension: 2560
+    special_tokens: [BOS, EOS]
+    pooling: fp32_arithmetic_mean_over_residues
+    cosine_accumulation: float64
+  sae:
+    api_alias: esmc-6b-2024-12-sae-layer60-k64-codebook16384
+    repository: biohub/ESMC-6B-sae-layer60-k64-codebook16384
+    revision: 99752fe6e4d25fbb26f887db2d9225e7a577da73
+    hidden_state_index: 60
+    codebook_size: 16384
+    top_k: 64
+    request_normalize_features: false
+    normalization: raw_divide_maximum_then_multiply_idf_fp32
+    pooling: featurewise_max_over_normalized_residue_activations
+    cosine_accumulation: float64
+
+native_tools:
+  usalign:
+    executable: USalign
+    version: '20260819'
+    source_commit: fa4376bd99fa17a123d05d7ea47cf6574c80d64f
+    source_archive_sha256: ee5a2ac8904a3d526a3888d7897a16594de0507bf4b167ec8c0c72b2202776d8
+    arguments: [-mol, prot]
+    structure_1: candidate
+    structure_2: wild_type
+    primary_normalization: structure_2_resolved_ca_length
+  hmmer:
+    executable: hmmsearch
+    version: '3.4'
+    arguments: [--max, --noali, -T, '-1000', --domT, '-1000', --incT, '-1000', --incdomT, '-1000']
+    score: tblout_full_sequence_bit_score_field_6
+    no_hit: per_reference_full_landscape_minimum_finite_minus_one_bit
+  mmseqs2:
+    executable: mmseqs
+    release: 18-8cc5c
+    commit: 8cc5ce367b5638c4306c2d7cfc652dd099a4643f
+    evalue: 1.0
+    sensitivity: 7.5
+    max_sequences: 2000
+    format: query,target,evalue,bits,pident,alnlen,qcov,tcov
+
+bootstrap:
+  seed: 1729
+  endpoint_replicates: 100
+  roc_replicates: 50
+  unit_test_replicates: 16
+  interval_percentiles: [2.5, 97.5]
+  roc_grid_points: 101
+  strata: [reference_id, structural_class, generation_method]
+
+interpretability:
+  reference_id: fictional_alpha
+  focal_position: 20
+  feature_activation_threshold: 0.0
+
+expected_counts:
+  full_total: 48
+  remote_total: 32
+  remote_analogues: 16
+  remote_negatives: 16
+  by_reference:
+    fictional_alpha: {full: 24, remote_analogues: 8, remote_negatives: 8, remote_total: 16}
+    fictional_beta: {full: 24, remote_analogues: 8, remote_negatives: 8, remote_total: 16}

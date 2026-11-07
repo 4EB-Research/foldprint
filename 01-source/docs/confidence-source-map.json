@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "baseline_paper_repo_commit": "4c02766",
+  "reference_document": {
+    "filename": "NeurIPS reviewer feedback-3.pdf",
+    "sha256": "7de391c1db6785976ae1173a975e2040e0f6801b601534debb89608956f7b8b3"
+  },
+  "migration": "adapted to canonical keys and explicit external inputs; mathematical matching and point-estimate parity audited; bootstrap streams recomputed",
+  "sources": [
+    {
+      "source_relative_to_sieve": "audit/iupred3_adapter.py",
+      "sha256": "64730c9651dff8b290689b78a36e1d955524b85783c83080a3acb439de3aeae9",
+      "destinations": [
+        "src/protein_sae_pipeline/scoring/iupred.py",
+        "scripts/score_iupred.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "structure_confidence_controls/paper_figs/threshold_balanced_matched/sampling.py",
+      "sha256": "69de6fddcda9cf54705ac164019fe31399cbffa75f815143b00def66f871dfc5",
+      "destinations": [
+        "src/protein_sae_pipeline/confidence.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "structure_confidence_controls/paper_figs/threshold_balanced_matched/run_analysis.py",
+      "sha256": "aa1fbf18360eb4352e6a0a0e26318e0353cbd83b0f8a87a2aa4d7363947ed8f5",
+      "destinations": [
+        "src/protein_sae_pipeline/confidence.py",
+        "src/protein_sae_pipeline/reviewer_analysis.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "structure_confidence_controls/paper_figs/three_way_confidence_controls/run_analysis.py",
+      "sha256": "3854c33e65b33c5e348eed2944266c849e379cfd252e9ad9329eebdecf0096bb",
+      "destinations": [
+        "src/protein_sae_pipeline/reviewer_analysis.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "scripts/plot_confidence_sampling_paper.py",
+      "sha256": "10a471868caa472261379cbe221dade3164df57d5fcad3261ca6182b6f93b152",
+      "destinations": [
+        "src/protein_sae_pipeline/figures/confidence_controls.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "scripts/plot_ptm_recall_only.py",
+      "sha256": "7c3bf55fe5db6aa86f4afd4d2e864cd7e5fe630df5b087d15dfffe6fd74e9b5a",
+      "destinations": [
+        "src/protein_sae_pipeline/figures/confidence_controls.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "scripts/plot_iupred_vertical_violins.py",
+      "sha256": "a1f8b6c9bf951c9f282da222c30da77c79e373ae7ff083a828f3e4a0d4595f9a",
+      "destinations": [
+        "src/protein_sae_pipeline/figures/confidence_controls.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "paper_figures/interp4disc/appendix/make_full_landscape_appendix.py",
+      "sha256": "38f6f69fff47c4d31927b853fbafb9375b660502ba83787094d95c43f77de2f7",
+      "destinations": [
+        "src/protein_sae_pipeline/figures/reviewer_appendix.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "paper_figures/interp4disc/appendix/make_unified_landscape_figures.py",
+      "sha256": "edbf53e487703d3fd400c6a9b2a8e6960c94b3337b28bd22ac30fd24ca4843c2",
+      "destinations": [
+        "src/protein_sae_pipeline/figures/reviewer_appendix.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "paper_figures/interp4disc/appendix/score_distributions_full_and_matched/make_score_distributions.py",
+      "sha256": "eddd79b294815cd6a9fef2c6f56137364783e7fd5e2699f68030a73976dabef6",
+      "destinations": [
+        "src/protein_sae_pipeline/figures/reviewer_appendix.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "paper_figures/interp4disc/appendix/score_separation/make_score_separation.py",
+      "sha256": "841a74a71b3207181a1a8d7b379e09e15dca4061192f0076dd78e1f7ec4892d7",
+      "destinations": [
+        "src/protein_sae_pipeline/reviewer_analysis.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "paper_figures/interp4disc/figure_3_by_generator/make_summaries.py",
+      "sha256": "203db590980f5d569cab51a1db4c9d0ebc0a7d7b507ab7305d799d484c00a11a",
+      "destinations": [
+        "src/protein_sae_pipeline/reviewer_analysis.py",
+        "src/protein_sae_pipeline/figures/reviewer_appendix.py"
+      ]
+    },
+    {
+      "source_relative_to_sieve": "paper_figures/interp4disc/figure_3_by_generator/make_rocs.py",
+      "sha256": "1eec09e9ec7b38ea9a7a8e1caa222bdd9a8303872927449b8a105954953e86e8",
+      "destinations": [
+        "src/protein_sae_pipeline/reviewer_analysis.py",
+        "src/protein_sae_pipeline/figures/reviewer_appendix.py"
+      ]
+    }
+  ]
+}

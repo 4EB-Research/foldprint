@@ -1,0 +1,19 @@
+{
+  "bootstrap_intervals": "recomputed by portable engine; not a bitwise CI parity claim",
+  "exact_pair_identities": 4459,
+  "full_rows": 158233,
+  "input_sha256": {
+    "audit/results/full/sequence_metrics.parquet": "f5eb27193ef555f51b6b554bcf49eee40c6884acb9dc67401d016559ea8ea6af",
+    "paper_figures/interp4disc/appendix/full_landscape_data/landscape_scores_complete.csv.gz": "8b41cbd715763de56d5b2c637dfe5e0a18901e03440985c86d013df90bf011da",
+    "structure_confidence_controls/paper_figs/threshold_balanced_matched/data/all_strategy_recall_at_1pct_5pct.csv": "5695b899a50ca11986b39852ddd67dc89628be8dec36b4c90b5fbaab1a107b55",
+    "structure_confidence_controls/paper_figs/threshold_balanced_matched/data/original_paper_vs_ptm_matched_recall_1pct_plot_data.csv": "6bcd9b307ddf811d58225bfff3314674716b3bb400adc418534943a5313a941a",
+    "structure_confidence_controls/paper_figs/threshold_balanced_matched/data/ptm_ge_050_pairs.csv.gz": "0bba43360e7eb95967a2ad9aee6f8db7ab0a4c2dd669d9d659538993acd0ffe8",
+    "structure_confidence_controls/paper_figs/threshold_balanced_matched/paper_sampling_plots/iupred_vertical_violins/iupred_distribution_summary.csv": "d19a824003a31fcab09733c8eb50c19570d2f41860ffd5b8dd416f4addd35448"
+  },
+  "iupred_class_distributions": 12,
+  "matched_rows": 8918,
+  "recall_fpr_threshold_comparisons": 96,
+  "remote_rows": 66653,
+  "status": "passed",
+  "tolerance": 1e-12
+}
