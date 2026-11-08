@@ -113,7 +113,7 @@ def test_iupred_preserves_smoothed_overshoot_and_residue_order():
 
 
 def test_cli_creates_cohort_figures_and_appendix_from_fictional_rows(tmp_path):
-    root = Path(__file__).resolve().parents[2]
+    root = Path(__file__).resolve().parents[1]
     spec = importlib.util.spec_from_file_location("confidence_cli", root / "scripts/make_confidence_figures.py")
     cli = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(cli)

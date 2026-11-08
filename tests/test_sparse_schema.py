@@ -22,7 +22,7 @@ from protein_sae_pipeline.representations.store import load_indexed_representati
 from protein_sae_pipeline.validation import load_and_validate_inputs
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class SparseChunkSchemaTests(unittest.TestCase):

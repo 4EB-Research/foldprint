@@ -20,7 +20,7 @@ from protein_sae_pipeline.figures.common import (
     NEGATIVE_COLOR,
 )
 from protein_sae_pipeline.figures.figure3 import _reference_order
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class FigureStyleTests(unittest.TestCase):

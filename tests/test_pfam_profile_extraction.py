@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 
 
-SCRIPT_PATH = Path(__file__).resolve().parents[2] / "scripts" / "extract_pfam_profiles.py"
+SCRIPT_PATH = Path(__file__).resolve().parents[1] / "scripts" / "extract_pfam_profiles.py"
 SPEC = importlib.util.spec_from_file_location("extract_pfam_profiles", SCRIPT_PATH)
 assert SPEC is not None and SPEC.loader is not None
 MODULE = importlib.util.module_from_spec(SPEC)

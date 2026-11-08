@@ -16,7 +16,7 @@ from protein_sae_pipeline.scoring.identity import calculate_positional_identity
 from protein_sae_pipeline.validation import load_and_validate_inputs
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 
 
 @lru_cache(maxsize=1)

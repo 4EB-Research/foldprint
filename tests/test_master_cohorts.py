@@ -15,7 +15,7 @@ class MasterCoverageTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         from pathlib import Path
 
-        cls.root = Path(__file__).resolve().parents[2]
+        cls.root = Path(__file__).resolve().parents[1]
         cls.config = load_config(cls.root / "configs/example.yaml")
         cls.inputs = load_and_validate_inputs(cls.config, cls.root / "example")
 

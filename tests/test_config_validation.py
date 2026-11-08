@@ -12,7 +12,7 @@ from protein_sae_pipeline.keys import CandidateKey, normalize_sequence, sequence
 from protein_sae_pipeline.validation import load_and_validate_inputs
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class KeyTests(unittest.TestCase):
