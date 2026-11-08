@@ -1,4 +1,4 @@
-# Protein SAE paper pipeline
+# Foldprint
 
 This repository implements the scoring, cohort, statistical, interpretability, and plotting pipeline used in the accompanying paper.
 
