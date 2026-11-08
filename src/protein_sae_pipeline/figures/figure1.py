@@ -1,4 +1,4 @@
-"""Figure 1: focal-protein landscape, SAE landscape, and distributed WT signature."""
+"""Figure 1: landscape, SAE scores, class medians, and distributed WT signature."""
 
 from __future__ import annotations
 
@@ -67,9 +67,7 @@ def _panel_frames(
     full = full.sort_values("manifest_row", kind="stable").reset_index(drop=True)
     expected = int(config.raw["references"][reference_id]["expected_full"])
     if len(full) != expected:
-        raise ValueError(
-            f"Figure 1 full target cohort has {len(full)} rows; expected {expected}"
-        )
+        raise ValueError(f"Figure 1 full target cohort has {len(full)} rows; expected {expected}")
     require_unique_keys(full, label="Figure 1 full cohort")
     finite_numeric(
         full,
@@ -108,9 +106,7 @@ def _contribution_tables(
 ) -> tuple[pd.DataFrame, pd.DataFrame, int]:
     reference_id = str(config.raw["interpretability"]["reference_id"])
     remote = panel_b.loc[panel_b["is_remote"].astype(bool)].copy()
-    expected_remote = int(
-        config.expected_counts["by_reference"][reference_id]["remote_total"]
-    )
+    expected_remote = int(config.expected_counts["by_reference"][reference_id]["remote_total"])
     if len(remote) != expected_remote:
         raise ValueError(
             f"Figure 1C remote cohort has {len(remote)} rows; expected {expected_remote}"
@@ -129,9 +125,7 @@ def _contribution_tables(
         if cohort.empty:
             raise ValueError(f"Figure 1C lacks structural class {structural_class}")
         profiles = [
-            store.candidate_profile(
-                CandidateKey(reference_id, str(row.sequence_sha256))
-            )
+            store.candidate_profile(CandidateKey(reference_id, str(row.sequence_sha256)))
             for row in cohort.itertuples(index=False)
         ]
         recurrence = feature_recurrence(profiles, feature_ids)
@@ -181,15 +175,9 @@ def _contribution_tables(
                 "cumulative_cosine_median": np.median(cumulative, axis=0),
                 "cumulative_cosine_q25": np.percentile(cumulative, 25, axis=0),
                 "cumulative_cosine_q75": np.percentile(cumulative, 75, axis=0),
-                "cumulative_numerator_share_median": np.median(
-                    cumulative_numerator, axis=0
-                ),
-                "cumulative_numerator_share_q25": np.percentile(
-                    cumulative_numerator, 25, axis=0
-                ),
-                "cumulative_numerator_share_q75": np.percentile(
-                    cumulative_numerator, 75, axis=0
-                ),
+                "cumulative_numerator_share_median": np.median(cumulative_numerator, axis=0),
+                "cumulative_numerator_share_q25": np.percentile(cumulative_numerator, 25, axis=0),
+                "cumulative_numerator_share_q75": np.percentile(cumulative_numerator, 75, axis=0),
             }
         )
         summaries.append(summary)
@@ -207,9 +195,7 @@ def prepare_figure1(
     config: PipelineConfig,
 ) -> Figure1Data:
     panel_a, panel_b = _panel_frames(master, config)
-    feature_summary, candidate_audit, feature_count = _contribution_tables(
-        panel_b, store, config
-    )
+    feature_summary, candidate_audit, feature_count = _contribution_tables(panel_b, store, config)
     return Figure1Data(
         panel_a,
         panel_b,
@@ -228,6 +214,9 @@ def export_figure1(data: Figure1Data, output_root: Path, config: PipelineConfig)
         {
             "figure1a_plot_data.csv.gz": data.panel_a,
             "figure1b_plot_data.csv.gz": data.panel_b,
+            "figure1c_class_medians.csv": class_medians(data.panel_b),
+            "figure1d_feature_summary.csv.gz": data.feature_summary,
+            # Retained as a legacy file alias; the paper now calls this panel D.
             "figure1c_feature_summary.csv.gz": data.feature_summary,
             "figure1c_candidate_score_audit.csv.gz": data.candidate_audit,
         },
@@ -238,6 +227,9 @@ def export_figure1(data: Figure1Data, output_root: Path, config: PipelineConfig)
             "figure1a_rows": len(data.panel_a),
             "figure1b_rows": len(data.panel_b),
             "figure1a_equals_figure1b_keys": True,
+            "figure1c_source_rows": len(data.panel_b),
+            "figure1c_cohort": "complete focal-reference landscape, same rows as 1B",
+            "figure1d_rows": len(data.candidate_audit),
             "figure1c_rows": len(data.candidate_audit),
             "wt_active_feature_count": data.wt_feature_count,
             "figure1c_feature_order": (
@@ -298,15 +290,13 @@ def _draw_panel_b(axis: plt.Axes, frame: pd.DataFrame) -> None:
     axis.set_title("B  Sparse-profile similarity", loc="left", fontweight="bold")
 
 
-def _draw_panel_c(axis: plt.Axes, strip: plt.Axes, summary: pd.DataFrame) -> None:
+def _draw_panel_d(axis: plt.Axes, strip: plt.Axes, summary: pd.DataFrame) -> None:
     class_styles = (
         ("analogue", ANALOGUE_COLOR, "TM-score ≥0.5"),
         ("negative", FIGURE1_NEGATIVE_COLOR, "TM-score <0.5"),
     )
     for label, color, display_label in class_styles:
-        group = summary.loc[summary["structural_class"].eq(label)].sort_values(
-            "wt_feature_rank"
-        )
+        group = summary.loc[summary["structural_class"].eq(label)].sort_values("wt_feature_rank")
         x = group["wt_feature_rank"].to_numpy(float)
         median = group["cumulative_cosine_median"].to_numpy(float)
         q25 = group["cumulative_cosine_q25"].to_numpy(float)
@@ -317,7 +307,7 @@ def _draw_panel_c(axis: plt.Axes, strip: plt.Axes, summary: pd.DataFrame) -> Non
     axis.set_xlim(1, int(summary["wt_feature_rank"].max()))
     axis.set_ylim(bottom=0)
     axis.legend(frameon=False, loc="lower right")
-    axis.set_title("C  Distributed WT-feature signature", loc="left", fontweight="bold")
+    axis.set_title("D  Distributed WT-feature signature", loc="left", fontweight="bold")
     maximum_rank = int(summary["wt_feature_rank"].max())
     for row, (label, color, _display_label) in enumerate(class_styles):
         recurrence = (
@@ -344,39 +334,80 @@ def _draw_panel_c(axis: plt.Axes, strip: plt.Axes, summary: pd.DataFrame) -> Non
     strip.spines[:].set_visible(False)
 
 
+def class_medians(frame: pd.DataFrame) -> pd.DataFrame:
+    """Panel C is derived from exactly the same complete cohort as panel B."""
+    return (
+        frame.groupby("structural_class", sort=True)
+        .agg(n=("sae_cosine_to_wt", "size"), median_sae_cosine=("sae_cosine_to_wt", "median"))
+        .reset_index()
+    )
+
+
+def _draw_class_medians(axis: plt.Axes, frame: pd.DataFrame) -> None:
+    summary = class_medians(frame).set_index("structural_class")
+    order = ["analogue", "negative"]
+    values = summary.loc[order, "median_sae_cosine"].to_numpy()
+    axis.bar([0, 1], values, color=[ANALOGUE_COLOR, FIGURE1_NEGATIVE_COLOR], width=0.55)
+    for i, value in enumerate(values):
+        axis.text(i, value + 0.025, f"{value:.3f}", ha="center", va="bottom")
+    axis.set(
+        xticks=[0, 1],
+        xticklabels=["TM-score ≥0.5", "TM-score <0.5"],
+        ylim=(0, 1.1),
+        ylabel="SAE cosine to WT",
+    )
+    axis.set_title("C  Median SAE similarity", loc="left", fontweight="bold")
+
+
+def _draw_density(axis: plt.Axes, frame: pd.DataFrame) -> None:
+    # Same histogram smoothing used for the paper's score landscapes.
+    from .reviewer_appendix import smoothed_relative_density
+
+    for label, color in (("analogue", ANALOGUE_COLOR), ("negative", FIGURE1_NEGATIVE_COLOR)):
+        values = frame.loc[frame.structural_class.eq(label), "sae_cosine_to_wt"]
+        centers, density = smoothed_relative_density(values, np.linspace(0, 1, 101))
+        axis.fill_betweenx(centers, 0, density, color=color, alpha=0.16)
+        axis.plot(density, centers, color=color, linewidth=1)
+    axis.set(xlim=(0, 1.05), ylim=(0, 1.02), xlabel="Relative\ndensity")
+    axis.tick_params(left=False, labelleft=False, bottom=False, labelbottom=False)
+    axis.spines[["top", "right", "bottom"]].set_visible(False)
+
+
 def render_figure1(data: Figure1Data, output_root: Path) -> None:
     configure_style()
-    figure = plt.figure(figsize=(8.2, 6.0), constrained_layout=True)
-    grid = figure.add_gridspec(2, 2, height_ratios=[1.0, 1.15])
+    figure = plt.figure(figsize=(10.2, 6.5), constrained_layout=True)
+    grid = figure.add_gridspec(2, 2, height_ratios=[1.0, 1.05], width_ratios=[1, 1.3])
     axis_a = figure.add_subplot(grid[0, 0])
-    axis_b = figure.add_subplot(grid[0, 1])
-    lower = grid[1, :].subgridspec(2, 1, height_ratios=[4.5, 1.0], hspace=0.05)
-    axis_c = figure.add_subplot(lower[0])
-    strip = figure.add_subplot(lower[1], sharex=axis_c)
+    upper = grid[0, 1].subgridspec(1, 2, width_ratios=[5, 1], wspace=0.08)
+    axis_b = figure.add_subplot(upper[0])
+    density = figure.add_subplot(upper[1], sharey=axis_b)
+    axis_c = figure.add_subplot(grid[1, 0])
+    lower = grid[1, 1].subgridspec(2, 1, height_ratios=[4.5, 1.0], hspace=0.05)
+    axis_d = figure.add_subplot(lower[0])
+    strip = figure.add_subplot(lower[1], sharex=axis_d)
     _draw_panel_a(axis_a, data.panel_a)
     _draw_panel_b(axis_b, data.panel_b)
-    _draw_panel_c(axis_c, strip, data.feature_summary)
-    axis_c.tick_params(axis="x", labelbottom=False)
-    for axis in (axis_a, axis_b, axis_c):
+    _draw_density(density, data.panel_b)
+    _draw_class_medians(axis_c, data.panel_b)
+    _draw_panel_d(axis_d, strip, data.feature_summary)
+    axis_d.tick_params(axis="x", labelbottom=False)
+    for axis in (axis_a, axis_b, axis_c, axis_d):
         axis.spines[["top", "right"]].set_visible(False)
-        axis.grid(axis="y", color=GRID, linewidth=0.5, alpha=0.7)
-        axis.set_axisbelow(True)
     save_figure(figure, output_root / "figure1" / "figure1")
-
-    for label, size, drawer, frame in (
-        ("figure1a", (3.8, 3.2), _draw_panel_a, data.panel_a),
-        ("figure1b", (3.8, 3.2), _draw_panel_b, data.panel_b),
+    for label, drawer, frame in (
+        ("figure1a", _draw_panel_a, data.panel_a),
+        ("figure1b", _draw_panel_b, data.panel_b),
+        ("figure1c", _draw_class_medians, data.panel_b),
     ):
-        standalone, axis = plt.subplots(figsize=size)
+        standalone, axis = plt.subplots(figsize=(4.2, 3.3), constrained_layout=True)
         drawer(axis, frame)
         axis.spines[["top", "right"]].set_visible(False)
         save_figure(standalone, output_root / "figure1" / label)
-
-    standalone = plt.figure(figsize=(8.1, 3.4), constrained_layout=True)
+    standalone = plt.figure(figsize=(5.5, 3.4), constrained_layout=True)
     lower = standalone.add_gridspec(2, 1, height_ratios=[4.5, 1.0], hspace=0.05)
     axis = standalone.add_subplot(lower[0])
     strip_axis = standalone.add_subplot(lower[1], sharex=axis)
-    _draw_panel_c(axis, strip_axis, data.feature_summary)
+    _draw_panel_d(axis, strip_axis, data.feature_summary)
     axis.tick_params(axis="x", labelbottom=False)
     axis.spines[["top", "right"]].set_visible(False)
-    save_figure(standalone, output_root / "figure1" / "figure1c")
+    save_figure(standalone, output_root / "figure1" / "figure1d")

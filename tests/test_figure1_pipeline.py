@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
 from figure_fixtures import fictional_context
+
 from protein_sae_pipeline.figures.common import exact_key_equality
 from protein_sae_pipeline.figures.figure1 import (
+    class_medians,
     export_figure1,
     prepare_figure1,
     render_figure1,
@@ -31,6 +33,14 @@ class Figure1PipelineTests(unittest.TestCase):
             1e-6,
         )
 
+    def test_class_medians_use_full_panel_b_not_remote_subset(self) -> None:
+        config, _inputs, store, master = fictional_context()
+        data = prepare_figure1(master.copy(), store, config)
+        table = class_medians(data.panel_b).set_index("structural_class")
+        self.assertEqual(int(table.n.sum()), len(data.panel_b))
+        for label, group in data.panel_b.groupby("structural_class"):
+            self.assertEqual(table.loc[label, "median_sae_cosine"], group.sae_cosine_to_wt.median())
+
     def test_key_equality_fails_closed_when_one_panel_loses_a_row(self) -> None:
         config, _inputs, store, master = fictional_context()
         data = prepare_figure1(master.copy(), store, config)
@@ -52,6 +62,9 @@ class Figure1PipelineTests(unittest.TestCase):
                 root / "figure1" / "data" / "figure1a_plot_data.csv.gz",
                 root / "figure1" / "data" / "figure1b_plot_data.csv.gz",
                 root / "figure1" / "data" / "figure1c_feature_summary.csv.gz",
+                root / "figure1" / "data" / "figure1c_class_medians.csv",
+                root / "figure1" / "data" / "figure1d_feature_summary.csv.gz",
+                root / "figure1" / "figure1d.png",
                 root / "figure1" / "figure1.png",
                 root / "figure1" / "figure1.svg",
                 root / "figure1" / "figure1.pdf",

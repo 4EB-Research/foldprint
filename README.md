@@ -44,7 +44,7 @@ The offline example requires no Biohub token or network connection.
 
 ## Figures
 
-`scripts/make_figure_1.py`, `scripts/make_figure_2.py`, and `scripts/make_figure_3.py` generate all main-text figures together with their underlying plotted-data tables.
+`scripts/make_figure_1.py` and `scripts/make_figure_2.py` generate the interpretability figures. Figure 1 now includes panels A-D, with panel C calculated directly from the same complete cohort as panel B. The original `make_figure_3.py` command is a **pooled legacy analysis**, not the generator-stratified Figure 3 in the current paper. The current Figure 3 uses `scripts/make_confidence_figures.py --sections retrieval`. The [figure-to-command map](docs/figure-map.md) also covers every appendix plot and the offline concordance command `scripts/analyze_concordance.py`.
 
 `scripts/make_confidence_figures.py` adds Figure 4, IUPred violins,
 generator-specific retrieval summaries, full/matched score distributions and
